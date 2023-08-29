@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-deployment
+  labels:
+    app: develeap-test-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: develeap-test-app
+  template:
+    metadata:
+      labels:
+        app: develeap-test-app
+    spec:
+      containers:
+        - name: {{ .Release.Name }}-container
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          ports:
+            - containerPort: {{ .Values.service.port }}

@@ -1,0 +1,8 @@
+# values.yaml
+image:
+  repository: public.ecr.aws/p5h2z8t6/develeap-test-registry
+  tag: latest
+
+service:
+  name: develeap-test-app
+  port: 80

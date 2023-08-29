@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+
+    environment {
+        ECR_REPO = 'public.ecr.aws/p5h2z8t6/develeap-test-registry' 
+        AWS_REGION = 'eu-central-1' 
+    }
+
+    stages {
+        stage('Build Image') {
+            steps {
+                checkout scm
+                sh "docker build -t my-app ."
+            }
+        }
+        
+        stage('Push to ECR') {
+            steps {
+                script {
+                    sh "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin public.ecr.aws"
+                    sh "docker tag my-app:latest ${ECR_REPO}:latest"
+                    sh "docker push ${ECR_REPO}:latest"
+                }
+            }
+        }
+    }
+}
